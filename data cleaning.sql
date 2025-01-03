@@ -107,8 +107,7 @@ WHERE (company, location, industry, total_laid_off, percentage_laid_off, `date`,
 	FROM DELETE_CTE
 ) AND row_num > 1;
 
--- one solution, which I think is a good one. Is to create a new column and add those row numbers in. Then delete where row numbers are over 2, then delete that column
--- so let's do it!!
+-- one solution, Is to create a new column and add those row numbers in. Then delete where row numbers are over 2, then delete that column
 
 ALTER TABLE world_layoffs.layoffs_staging ADD row_num INT;
 
@@ -183,7 +182,7 @@ WHERE industry IS NULL
 OR industry = ''
 ORDER BY industry;
 
--- let's take a look at these
+
 SELECT *
 FROM world_layoffs.layoffs_staging2
 WHERE company LIKE 'Bally%';
@@ -192,10 +191,6 @@ SELECT *
 FROM world_layoffs.layoffs_staging2
 WHERE company LIKE 'airbnb%';
 
--- it looks like airbnb is a travel, but this one just isn't populated.
--- I'm sure it's the same for the others. What we can do is
--- write a query that if there is another row with the same company name, it will update it to the non-null industry values
--- makes it easy so if there were thousands we wouldn't have to manually check them all
 
 -- we should set the blanks to nulls since those are typically easier to work with
 UPDATE world_layoffs.layoffs_staging2
@@ -284,7 +279,7 @@ FROM world_layoffs.layoffs_staging2;
 
 -- 3. Look at Null Values
 
--- the null values in total_laid_off, percentage_laid_off, and funds_raised_millions all look normal. I don't think I want to change that
+-- the null values in total_laid_off, percentage_laid_off, and funds_raised_millions all look normal. 
 -- I like having them null because it makes it easier for calculations during the EDA phase
 
 -- so there isn't anything I want to change with the null values
@@ -318,36 +313,4 @@ DROP COLUMN row_num;
 
 SELECT * 
 FROM world_layoffs.layoffs_staging2;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
